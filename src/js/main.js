@@ -19,13 +19,6 @@ jQuery(document).ready(function($) {
     }), 0);
   }
 
-  // check SVG support and replace .png (perhaps now outdated)
-  if (!Modernizr.svg) {
-    $('img[src*="svg"]').attr('src', function() {
-      return $(this).attr('src'.replace('.svg', '.png'));
-    });
-  }
-
   // bind slide toggles
   $('a.title-trigger').on({
     click: function(e) {
