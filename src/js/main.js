@@ -6,7 +6,7 @@ var customAlignments = function() {
     titlewidth = $(this).find('.page-title').innerWidth();
     return $(this).find('.page-content').css('margin-left', (width / 2) - (titlewidth / 2) + 'px');
   });
-}
+};
 
 jQuery(document).ready(function($) {
 
@@ -63,3 +63,56 @@ document.onreadystatechange = function() {
     customAlignments();
   }
 };
+
+// Site object
+
+Site = {
+  init: function() {
+    this.Swiper.init();
+  },
+};
+
+Site.Swiper = {
+  $galleries: $('.swiper-container'),
+  galleryInstances: [],
+
+  init: function() {
+    var _this = this;
+
+    if (_this.$galleries.length) {
+      $(document).ready(function() {
+        _this.$galleries.each(function(index, item) {
+          _this.createGallery(item, index);
+        });
+      });
+    }
+  },
+
+  createGallery: function(container, index) {
+    var _this = this;
+
+    _this.galleryInstances.push(new Swiper(container, {
+      loop: true,
+      preloadImages: false,
+      lazyLoading: true,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev',
+      pagination: '.swiper-pagination',
+      paginationType: 'fraction',
+      observer: true,
+      observeParents: true,
+      paginationFractionRender: function(swiper, currentClassName, totalClassName) {
+        return '<span class="' + currentClassName + '"></span>' + '/' + '<span class="' + totalClassName + '"></span>:';
+      },
+      onSlideChangeEnd: function(swiper) {
+        var $activeSlide = $(swiper.slides[swiper.activeIndex]);
+        var $captionTarget = swiper.container.find('.swiper-caption');
+        var caption = $activeSlide.data('caption');
+
+        $captionTarget.text(caption);
+      },
+    }));
+  }
+};
+
+Site.init();

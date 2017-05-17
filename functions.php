@@ -17,7 +17,7 @@ if ( function_exists( 'add_theme_support' ) ) {
 if ( function_exists( 'add_image_size' ) ) {
   add_image_size( 'admin-thumb', 150, 150, false );
   add_image_size( 'opengraph', 400, 300, true );
-  add_image_size( 'gallery', 750, 9999, false );
+  add_image_size( 'gallery', 1000, 900, false );
 }
 
 get_template_part( 'lib/gallery' );
@@ -79,4 +79,39 @@ function cc_mime_types( $mimes ){
   return $mimes;
 }
 add_filter( 'upload_mimes', 'cc_mime_types' );
+
+// LAZY LOADED GALLERIES
+// Custom img attributes to be compatible with lazysize
+function add_lazy_on_srcset($attr) {
+
+  if (!is_admin()) {
+
+    // if image has data-no-lazysizes attribute dont add lazysizes classes
+    if (!isset($attr['data-lazy'])) {
+      return $attr;
+    }
+
+    // Add lazysize class
+    $attr['class'] .= ' swiper-lazy';
+
+    if (isset($attr['srcset'])) {
+      // Add lazysize data-srcset
+      $attr['data-srcset'] = $attr['srcset'];
+      // Remove default srcset
+      unset($attr['srcset']);
+    } else {
+      // Add lazysize data-src
+      $attr['data-src'] = $attr['src'];
+    }
+
+    unset($attr['src']);
+    // Set default to white blank
+/*     $attr['src'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAQAAABTNcdGAAAAC0lEQVR42mNkgAIAABIAAmXG3J8AAAAASUVORK5CYII='; */
+
+  }
+
+  return $attr;
+
+}
+add_filter('wp_get_attachment_image_attributes', 'add_lazy_on_srcset');
 ?>
