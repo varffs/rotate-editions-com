@@ -55,6 +55,7 @@ function new_display_post_thumbnail_column($col, $id){
     break;
   }
 }
+
 // Remove WP Emoji
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
@@ -81,32 +82,25 @@ function cc_mime_types( $mimes ){
 add_filter( 'upload_mimes', 'cc_mime_types' );
 
 // LAZY LOADED GALLERIES
-// Custom img attributes to be compatible with lazysize
 function add_lazy_on_srcset($attr) {
 
   if (!is_admin()) {
 
-    // if image has data-no-lazysizes attribute dont add lazysizes classes
+    // if image doesnt have data-lazy dont do anything
     if (!isset($attr['data-lazy'])) {
       return $attr;
     }
 
-    // Add lazysize class
     $attr['class'] .= ' swiper-lazy';
 
     if (isset($attr['srcset'])) {
-      // Add lazysize data-srcset
       $attr['data-srcset'] = $attr['srcset'];
-      // Remove default srcset
       unset($attr['srcset']);
     } else {
-      // Add lazysize data-src
       $attr['data-src'] = $attr['src'];
     }
 
     unset($attr['src']);
-    // Set default to white blank
-/*     $attr['src'] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAQAAABTNcdGAAAAC0lEQVR42mNkgAIAABIAAmXG3J8AAAAASUVORK5CYII='; */
 
   }
 
