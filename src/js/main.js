@@ -9,22 +9,49 @@ Site = {
 
 Site.Menu = {
   init: function() {
+    this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
 
     // bind slide toggles
     $('.title-trigger').on({
       click: function(e) {
+        var data = $(this).data();
+
         e.preventDefault();
-        $(this).parent().parent('div').find('.content-triggered').slideToggle();
+
+        if (data.project) {
+          _this.toggleProject(data.target);
+        } else {
+          _this.togglePage(data.target);
+        }
       }
     });
 
     // bind project toggles
     $('#projects-trigger').on({
       click: function() {
-        $('#projects').slideToggle();
+        _this.toggleProjects();
       }
     });
+  },
 
+  toggleProjects: function() {
+    $('#projects').slideToggle();
+  },
+
+  toggleProject: function(project) {
+    var $project = $('#project-' + project);
+
+    $project.find('.post-content').slideToggle();
+  },
+
+  togglePage: function(page) {
+    var $page = $('#' + page);
+
+    $page.find('.page-content').slideToggle();
   },
 };
 
@@ -44,19 +71,13 @@ Site.Router = {
     var params = hash.split('/');
 
     if (params[0] === 'project') {
-      var $project = $('#project-' + params[1]);
-
-      $('#projects').slideDown();
-      $project.find('.post-content').slideDown();
-
-      _this.clearUrl();
+      Site.Menu.toggleProjects();
+      Site.Menu.toggleProject(params[1].toLowerCase());
     } else if (params[0] === 'page') {
-      var $page = $('#' + params[1].toLowerCase());
-
-      $page.find('.page-content').slideDown();
-
-      _this.clearUrl();
+      Site.Menu.togglePage(params[1].toLowerCase());
     }
+
+    _this.clearUrl();
   },
 
   clearUrl: function() {
