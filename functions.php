@@ -17,7 +17,7 @@ if ( function_exists( 'add_theme_support' ) ) {
 if ( function_exists( 'add_image_size' ) ) {
   add_image_size( 'admin-thumb', 150, 150, false );
   add_image_size( 'opengraph', 400, 300, true );
-  add_image_size( 'gallery', 750, 9999, false );
+  add_image_size( 'gallery', 1000, 900, false );
 }
 
 get_template_part( 'lib/gallery' );
@@ -55,6 +55,7 @@ function new_display_post_thumbnail_column($col, $id){
     break;
   }
 }
+
 // Remove WP Emoji
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
@@ -79,4 +80,32 @@ function cc_mime_types( $mimes ){
   return $mimes;
 }
 add_filter( 'upload_mimes', 'cc_mime_types' );
+
+// LAZY LOADED GALLERIES
+function add_lazy_on_srcset($attr) {
+
+  if (!is_admin()) {
+
+    // if image doesnt have data-lazy dont do anything
+    if (!isset($attr['data-lazy'])) {
+      return $attr;
+    }
+
+    $attr['class'] .= ' swiper-lazy';
+
+    if (isset($attr['srcset'])) {
+      $attr['data-srcset'] = $attr['srcset'];
+      unset($attr['srcset']);
+    } else {
+      $attr['data-src'] = $attr['src'];
+    }
+
+    unset($attr['src']);
+
+  }
+
+  return $attr;
+
+}
+add_filter('wp_get_attachment_image_attributes', 'add_lazy_on_srcset');
 ?>

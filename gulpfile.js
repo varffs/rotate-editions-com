@@ -33,7 +33,7 @@ var source = {
 
 var watch = {
   javascript: 'src/js/main.js',
-  stylus: ['src/styl/**.styl'],
+  stylus: ['src/styl/site.styl'],
   images: 'src/img/**.*'
 }
 
