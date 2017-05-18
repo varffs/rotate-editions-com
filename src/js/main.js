@@ -1,74 +1,122 @@
-var customAlignments = function() {
-  width = $('#main-content').innerWidth();
-
-  $('div.page').each(function() {
-    var titlewidth;
-    titlewidth = $(this).find('.page-title').innerWidth();
-    return $(this).find('.page-content').css('margin-left', (width / 2) - (titlewidth / 2) + 'px');
-  });
-};
-
-jQuery(document).ready(function($) {
-
-  var hash, params, width;
-
-  // scrolltop if is mobile and no hash set?
-  if (/mobile/i.test(navigator.userAgent) && !window.location.hash) {
-    setTimeout((function() {
-      return window.scrollTo(0, 1);
-    }), 0);
-  }
-
-  // bind slide toggles
-  $('a.title-trigger').on({
-    click: function(e) {
-      e.preventDefault();
-      $(this).parent().parent('div').find('.content-triggered').slideToggle();
-    }
-  });
-
-  $('#projects-trigger').on({
-    click: function() {
-      $('#projects').slideToggle();
-    }
-  });
-
-  // set SVG fills
-  $('div.project').each(function() {
-    var color;
-    color = $(this).css('color');
-    return $(this).find('svg').css('fill', color);
-  });
-
-  // hash param routing
-  hash = window.location.hash.substr(3);
-  params = hash.split('/');
-
-  if (params[0] === 'project') {
-    $('#project-' + params[1]).find('a.title-trigger').trigger('click');
-    return window.location.hash = '';
-  } else if (params[0] === 'page') {
-    $('#' + params[1]).find('a.title-trigger').trigger('click');
-    return window.location.hash = '';
-  }
-
-  // custom alignment before fontface
-  customAlignments();
-
-});
-
-document.onreadystatechange = function() {
-  if (document.readyState === 'complete') {
-    // custom alignments when fonts are ready
-    customAlignments();
-  }
-};
-
-// Site object
-
 Site = {
   init: function() {
     this.Swiper.init();
+    this.Menu.init();
+    this.Router.init();
+    this.Layout.init();
+  },
+};
+
+Site.Menu = {
+  init: function() {
+    this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
+
+    // bind slide toggles
+    $('.title-trigger').on({
+      click: function(e) {
+        var data = $(this).data();
+
+        e.preventDefault();
+
+        if (data.project) {
+          _this.toggleProject(data.target);
+        } else {
+          _this.togglePage(data.target);
+        }
+      }
+    });
+
+    // bind project toggles
+    $('#projects-trigger').on({
+      click: function() {
+        _this.toggleProjects();
+      }
+    });
+  },
+
+  toggleProjects: function() {
+    $('#projects').slideToggle();
+  },
+
+  toggleProject: function(project) {
+    var $project = $('#project-' + project);
+
+    $project.find('.post-content').slideToggle();
+  },
+
+  togglePage: function(page) {
+    var $page = $('#' + page);
+
+    $page.find('.page-content').slideToggle();
+  },
+};
+
+Site.Router = {
+  init: function() {
+    var _this = this;
+    var hash = window.location.hash;
+
+    if (hash) {
+      _this.onLoad(hash);
+    }
+  },
+
+  onLoad: function(rawHash) {
+    var _this = this;
+    var hash = rawHash.substr(3);
+    var params = hash.split('/');
+
+    if (params[0] === 'project') {
+      Site.Menu.toggleProjects();
+      Site.Menu.toggleProject(params[1].toLowerCase());
+    } else if (params[0] === 'page') {
+      Site.Menu.togglePage(params[1].toLowerCase());
+    }
+
+    _this.clearUrl();
+  },
+
+  clearUrl: function() {
+    window.location.hash = '';
+    history.pushState({}, '', './');
+  }
+};
+
+Site.Layout = {
+  init: function() {
+    var _this = this;
+
+    _this.setSvgColors();
+
+    _this.customAlignment();
+
+    // custom alignments when fonts are ready
+    document.onreadystatechange = function() {
+      if (document.readyState === 'complete') {
+        _this.customAlignment();
+      }
+    };
+  },
+
+  setSvgColors: function() {
+    $('div.project').each(function() {
+      var color = $(this).css('color');
+
+      $(this).find('svg').css('fill', color);
+    });
+  },
+
+  customAlignment: function() {
+    var width = $('#main-content').innerWidth();
+
+    $('div.page').each(function() {
+      var titlewidth = $(this).find('.page-title').innerWidth();
+      return $(this).find('.page-content').css('margin-left', (width / 2) - (titlewidth / 2) + 'px');
+    });
   },
 };
 

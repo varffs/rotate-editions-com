@@ -20,9 +20,9 @@
 			if ( have_posts() ) : while ( have_posts() ) : the_post();
 				$meta = get_post_meta($post->ID);
 		?>
-			<div <?php post_class(); ?> id="project-<?php the_ID(); ?>" style="margin-left: <?php if (!empty($meta['_cmb_indent'][0])) { echo $meta['_cmb_indent'][0];} ?>px; <?php if (!empty($meta['_cmb_color'][0])) { echo 'color: ' . $meta['_cmb_color'][0];} ?>;">
+			<div <?php post_class(); ?> id="project-<?php echo $post->post_name; ?>" style="margin-left: <?php if (!empty($meta['_cmb_indent'][0])) { echo $meta['_cmb_indent'][0];} ?>px; <?php if (!empty($meta['_cmb_color'][0])) { echo 'color: ' . $meta['_cmb_color'][0];} ?>;">
 
-				<h1><a class="post-title title-trigger">
+				<h1><a class="post-title title-trigger" data-project=true data-target="<?php echo $post->post_name; ?>">
 					<?php
 						if ($meta['_cmb_logo_svg'][0]) {
 							echo file_get_contents($meta['_cmb_logo_svg'][0]);
@@ -44,7 +44,7 @@
 		</section>
 
 		<div class="page" id="about">
-			<h1><a class="page-title title-trigger">About;</a></h1>
+			<h1><a class="page-title title-trigger" data-target="about">About;</a></h1>
 
 			<div class="page-content content-triggered">
 				<?php pageContent('about'); ?>
@@ -52,7 +52,7 @@
 		</div>
 
 		<div class="page" id="links">
-			<h1><a class="page-title title-trigger">Links;</a></h1>
+			<h1><a class="page-title title-trigger" data-target="links">Links;</a></h1>
 
 			<div class="page-content content-triggered">
 				<?php pageContent('links'); ?>
@@ -60,7 +60,7 @@
 		</div>
 
 		<div class="page" id="contact">
-			<h1><a class="page-title title-trigger">Contact</a></h1>
+			<h1><a class="page-title title-trigger" data-target="contact">Contact</a></h1>
 
 			<div class="page-content content-triggered">
 				<?php pageContent('contact'); ?>
