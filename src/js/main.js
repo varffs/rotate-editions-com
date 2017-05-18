@@ -1,74 +1,101 @@
-var customAlignments = function() {
-  width = $('#main-content').innerWidth();
-
-  $('div.page').each(function() {
-    var titlewidth;
-    titlewidth = $(this).find('.page-title').innerWidth();
-    return $(this).find('.page-content').css('margin-left', (width / 2) - (titlewidth / 2) + 'px');
-  });
-};
-
-jQuery(document).ready(function($) {
-
-  var hash, params, width;
-
-  // scrolltop if is mobile and no hash set?
-  if (/mobile/i.test(navigator.userAgent) && !window.location.hash) {
-    setTimeout((function() {
-      return window.scrollTo(0, 1);
-    }), 0);
-  }
-
-  // bind slide toggles
-  $('a.title-trigger').on({
-    click: function(e) {
-      e.preventDefault();
-      $(this).parent().parent('div').find('.content-triggered').slideToggle();
-    }
-  });
-
-  $('#projects-trigger').on({
-    click: function() {
-      $('#projects').slideToggle();
-    }
-  });
-
-  // set SVG fills
-  $('div.project').each(function() {
-    var color;
-    color = $(this).css('color');
-    return $(this).find('svg').css('fill', color);
-  });
-
-  // hash param routing
-  hash = window.location.hash.substr(3);
-  params = hash.split('/');
-
-  if (params[0] === 'project') {
-    $('#project-' + params[1]).find('a.title-trigger').trigger('click');
-    return window.location.hash = '';
-  } else if (params[0] === 'page') {
-    $('#' + params[1]).find('a.title-trigger').trigger('click');
-    return window.location.hash = '';
-  }
-
-  // custom alignment before fontface
-  customAlignments();
-
-});
-
-document.onreadystatechange = function() {
-  if (document.readyState === 'complete') {
-    // custom alignments when fonts are ready
-    customAlignments();
-  }
-};
-
-// Site object
-
 Site = {
   init: function() {
     this.Swiper.init();
+    this.Menu.init();
+    this.Router.init();
+    this.Layout.init();
+  },
+};
+
+Site.Menu = {
+  init: function() {
+
+    // bind slide toggles
+    $('.title-trigger').on({
+      click: function(e) {
+        e.preventDefault();
+        $(this).parent().parent('div').find('.content-triggered').slideToggle();
+      }
+    });
+
+    // bind project toggles
+    $('#projects-trigger').on({
+      click: function() {
+        $('#projects').slideToggle();
+      }
+    });
+
+  },
+};
+
+Site.Router = {
+  init: function() {
+    var _this = this;
+    var hash = window.location.hash;
+
+    if (hash) {
+      _this.onLoad(hash);
+    }
+  },
+
+  onLoad: function(rawHash) {
+    var _this = this;
+    var hash = rawHash.substr(3);
+    var params = hash.split('/');
+
+    if (params[0] === 'project') {
+      var $project = $('#project-' + params[1]);
+
+      $('#projects').slideDown();
+      $project.find('.post-content').slideDown();
+
+      _this.clearUrl();
+    } else if (params[0] === 'page') {
+      var $page = $('#' + params[1].toLowerCase());
+
+      $page.find('.page-content').slideDown();
+
+      _this.clearUrl();
+    }
+  },
+
+  clearUrl: function() {
+    window.location.hash = '';
+    history.pushState({}, '', './');
+  }
+};
+
+Site.Layout = {
+  init: function() {
+    var _this = this;
+
+    _this.setSvgColors();
+
+    _this.customAlignment();
+
+    // custom alignments when fonts are ready
+    document.onreadystatechange = function() {
+      if (document.readyState === 'complete') {
+        _this.customAlignment();
+      }
+    };
+  },
+
+  setSvgColors: function() {
+    $('div.project').each(function() {
+      var color = $(this).css('color');
+
+      $(this).find('svg').css('fill', color);
+    });
+  },
+
+  customAlignment: function() {
+    var width = $('#main-content').innerWidth();
+
+    $('div.page').each(function() {
+      var titlewidth = $(this).find('.page-title').innerWidth();
+      return $(this).find('.page-content').css('margin-left', (width / 2) - (titlewidth / 2) + 'px');
+    });
   },
 };
 
