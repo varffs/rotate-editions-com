@@ -11,6 +11,8 @@ $metabox = array(
   'show_on'    => array( 'key' => 'options-page', 'value' => array( $page_key ), ), //value must be same as id
   'show_names' => true,
   'fields'     => array(
+
+/*
     array(
       'name' => __( 'Social Media', 'cmb2' ),
       'desc' => __( 'urls and accounts for different social media platforms. For use in menus and metadata', 'cmb2' ),
@@ -35,9 +37,11 @@ $metabox = array(
       'id'   => $prefix . 'socialmedia_instagram',
       'type' => 'text',
     ),
+*/
 
     // METADATA OPTIONS
 
+/*
     array(
       'name' => __( 'Metadata options', 'cmb2' ),
       'desc' => __( 'Settings relating to open graph, facebook and twitter sharing, and other social media metadata', 'cmb2' ),
@@ -62,9 +66,11 @@ $metabox = array(
       'id'   => $prefix . 'og_fb_app_id',
       'type' => 'text',
     ),
+*/
 
     // BOILER
 
+/*
     array(
       'name' => __( 'Analytics', 'cmb2' ),
       'desc' => __( '', 'cmb2' ),
@@ -77,29 +83,22 @@ $metabox = array(
       'id'   => $prefix . 'google_analytics_id',
       'type' => 'text',
     ),
+*/
 
-    // BOILER
+    // MENU OPTIONS
 
     array(
-      'name' => __( 'Title for options section', 'cmb2' ),
+      'name' => __( 'Menu options', 'cmb2' ),
       'desc' => __( '', 'cmb2' ),
-      'id'   => $prefix . 'general_title',
+      'id'   => $prefix . 'menu_title',
       'type' => 'title',
     ),
     array(
-      'name' => __( 'Test Text', 'IGV' ),
-      'desc' => __( 'field description (optional)', 'IGV' ),
+      'name' => __( 'Shop link', 'IGV' ),
+      'desc' => __( 'if set will show in menu (optional)', 'IGV' ),
       'id'   => $prefix . 'test_text',
-      'type' => 'text',
-      'default' => 'Default Text',
+      'type' => 'text_url',
     ),
-    array(
-      'name'    => __( 'Test Color Picker', 'IGV' ),
-      'desc'    => __( 'field description (optional)', 'IGV' ),
-      'id'      => $prefix . 'test_colorpicker',
-      'type'    => 'colorpicker',
-      'default' => '#bada55',
-    )
   )
 );
 
