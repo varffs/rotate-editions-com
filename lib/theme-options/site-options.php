@@ -1,6 +1,6 @@
 <?php
 // SITE OPTIONS
-$prefix = '_igv_';
+$prefix = '_cmb_';
 $suffix = '_options';
 
 $page_key = $prefix . 'site' . $suffix;
@@ -96,7 +96,7 @@ $metabox = array(
     array(
       'name' => __( 'Shop link', 'IGV' ),
       'desc' => __( 'if set will show in menu (optional)', 'IGV' ),
-      'id'   => $prefix . 'test_text',
+      'id'   => $prefix . 'shop_url',
       'type' => 'text_url',
     ),
   )
