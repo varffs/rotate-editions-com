@@ -20,15 +20,21 @@ if ( function_exists( 'add_image_size' ) ) {
   add_image_size( 'gallery', 1000, 900, false );
 }
 
+function cmb_initialize_cmb_meta_boxes() {
+  if (!class_exists( 'cmb2_bootstrap_202' ) ) {
+    require_once 'vendor/webdevstudios/cmb2/init.php';
+  }
+}
+add_action( 'init', 'cmb_initialize_cmb_meta_boxes', 11 );
+
+function composer_autoload() {
+  require_once( 'vendor/autoload.php' );
+}
+add_action( 'init', 'composer_autoload', 10 );
+
 get_template_part( 'lib/gallery' );
 get_template_part( 'lib/post-types' );
 get_template_part( 'lib/meta-boxes' );
-
-add_action( 'init', 'cmb_initialize_cmb_meta_boxes', 9999 );
-function cmb_initialize_cmb_meta_boxes() {
-  if ( ! class_exists( 'cmb_Meta_Box' ) )
-    require_once 'lib/metabox/init.php';
-}
 
 /* disable that freaking admin bar */
 add_filter('show_admin_bar', '__return_false');
