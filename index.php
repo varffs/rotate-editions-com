@@ -1,4 +1,8 @@
-<?php get_header(); ?>
+<?php
+  get_header();
+
+  $shop_link = IGV_get_option('_cmb_site_options', '_cmb_shop_url');
+?>
 
 	<!-- main content -->
 
@@ -60,12 +64,22 @@
 		</div>
 
 		<div class="page" id="contact">
-			<h1><a class="page-title title-trigger" data-target="contact">Contact</a></h1>
+			<h1><a class="page-title title-trigger" data-target="contact">Contact<?php if ($shop_link) {echo ';';} ?></a></h1>
 
 			<div class="page-content content-triggered">
 				<?php pageContent('contact'); ?>
 			</div>
 		</div>
+
+		<?php
+  	  if ($shop_link) {
+    ?>
+		<div class="page" id="shop">
+			<h1><a class="page-title" href="<?php echo $shop_link; ?>">Shop</a></h1>
+		</div>
+    <?php
+  	  }
+  ?>
 
 	<!-- end main-content -->
 
