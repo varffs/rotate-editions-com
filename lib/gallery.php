@@ -125,7 +125,7 @@ function my_gallery_shortcode($attr) {
 
   // Finish markup and return
 
-  $output .= "</div><div class='swiper-meta'><div class='swiper-pagination'></div><div class='swiper-caption'></div></div><div class='swiper-button-prev'></div><div class='swiper-button-next'></div></div>\n";
+  $output .= "</div><div class='swiper-meta'><div class='swiper-pagination'></div><div class='swiper-caption'></div></div><div class='swiper-button-prev swiper-button-white'></div><div class='swiper-button-next swiper-button-white'></div></div>\n";
 
   return $output;
 }
