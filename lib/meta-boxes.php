@@ -17,6 +17,7 @@ function igv_cmb_metaboxes() {
 		'id'            => $prefix . 'about',
 		'title'         => esc_html__( 'About Metabox', 'cmb2' ),
 		'object_types'  => array( 'page', ), // Post type
+		'show_on'       => array( 'key' => 'id', 'value' => array( 50 ) ),
 	) );
 
 	$about_meta->add_field( array(
